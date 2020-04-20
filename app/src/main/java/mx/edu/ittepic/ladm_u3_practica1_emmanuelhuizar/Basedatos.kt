@@ -8,14 +8,12 @@ import android.database.sqlite.SQLiteOpenHelper
 
 class Basedatos(context:Context,nombreBaseDatos:String,cursor:SQLiteDatabase.CursorFactory?,versionBaseDatos:Int) : SQLiteOpenHelper(context,nombreBaseDatos,cursor,versionBaseDatos ){
     override fun onCreate(db: SQLiteDatabase?) {
-        //se utiliza para contruir la estructura de tablas de SQLite
         try{
-            db?.execSQL("CREATE TABLE PERSONA(ID INTEGER PRIMARY KEY AUTOINCREMENT, NOMBRE VARCHAR(200),DOMICILIO VARCHAR(500))")
+            db?.execSQL("CREATE TABLE ACTIVIDAD(IDactividad INTEGER PRIMARY KEY AUTOINCREMENT, Descripcion VARCHAR(500), FechaEntrega DATE,FechaCaptura DATE)")
+            db?.execSQL("CREATE TABLE EVIDENCIA(IDevidencia INTEGER PRIMARY KEY AUTOINCREMENT,IDactividad INTEGER NOT NULL,Foto BLOB,FOREIGN KEY (ID_ACTIVIDAD) REFERENCES ACTIVIDAD(ID_ACTIVIDAD))")
         }catch (error:SQLiteException){
         }
     }
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        //Upgrate = actualiza mayor = eSTRUCTURA
-        //Update = Actualiza menos = data
     }
 }
