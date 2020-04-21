@@ -10,7 +10,7 @@ class Basedatos(context:Context,nombreBaseDatos:String,cursor:SQLiteDatabase.Cur
     override fun onCreate(db: SQLiteDatabase?) {
         try{
             db?.execSQL("CREATE TABLE ACTIVIDAD(IDactividad INTEGER PRIMARY KEY AUTOINCREMENT, Descripcion VARCHAR(500), FechaEntrega DATE,FechaCaptura DATE)")
-            db?.execSQL("CREATE TABLE EVIDENCIA(IDevidencia INTEGER PRIMARY KEY AUTOINCREMENT,IDactividad INTEGER NOT NULL,Foto BLOB,FOREIGN KEY (ID_ACTIVIDAD) REFERENCES ACTIVIDAD(ID_ACTIVIDAD))")
+            db?.execSQL("CREATE TABLE EVIDENCIA(IDevidencia INTEGER PRIMARY KEY AUTOINCREMENT,IDactividad INTEGER NOT NULL,Foto BLOB,FOREIGN KEY (IDactividad) REFERENCES ACTIVIDAD(IDactividad))")
         }catch (error:SQLiteException){
         }
     }

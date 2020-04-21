@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical"
     android:padding="20dp"
     tools:context=".MainActivity">
@@ -39,15 +40,11 @@
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="113dp"
-        android:layout_height="108dp"
-        android:layout_gravity="right"
-        android:clickable="true"
-        app:elevation="20dp"
-        app:fabSize="normal"
-        app:maxImageSize="100dp"
-        app:srcCompat="@drawable/round_add_circle_black_48dp" />
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Nueva actividad" />
 
 </LinearLayout>

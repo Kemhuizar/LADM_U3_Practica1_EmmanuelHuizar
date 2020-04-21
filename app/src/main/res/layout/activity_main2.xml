@@ -22,8 +22,16 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                app:srcCompat="@android:drawable/ic_dialog_alert" />
+
+        </LinearLayout>
     </ScrollView>
 
     <LinearLayout
@@ -58,22 +66,17 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton3"
-            android:layout_width="87dp"
-            android:layout_height="95dp"
-            android:layout_gravity="right"
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
             android:layout_weight="1"
-            android:clickable="true"
-            app:elevation="6dp"
-            app:fabSize="normal"
-            app:maxImageSize="100dp"
-            app:srcCompat="@drawable/round_add_circle_black_48dp" />
+            android:text="Nueva evidencia" />
 
         <Button
             android:id="@+id/button4"
-            android:layout_width="234dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Borrar Evidencias" />
     </LinearLayout>

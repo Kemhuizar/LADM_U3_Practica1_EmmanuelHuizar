@@ -1,29 +1,66 @@
 package mx.edu.ittepic.ladm_u3_practica1_emmanuelhuizar
 
+import android.app.Dialog
 import android.content.Intent
 import android.database.sqlite.SQLiteException
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.activity_main.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class MainActivity : AppCompatActivity() {
     val nombreBaseDatos = "ejemplo1"
     var listaID=ArrayList<String>()
-
+    @RequiresApi(Build.VERSION_CODES.O)
+    var fecha1=fechaActual()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         CargarData()
-        floatingActionButton.setOnClickListener {
-            var otroActivity= Intent(this,Main3Activity::class.java)
-            startActivity(otroActivity)
+        button5.setOnClickListener {
+            var dialogo= Dialog(this)
+            dialogo.setContentView(R.layout.agregar)
+
+            var descripcion = dialogo.findViewById<EditText>(R.id.editText5)
+            var fecha = dialogo.findViewById<EditText>(R.id.editText6)
+            var enviar = dialogo.findViewById<Button>(R.id.button9)
+            var cerrar = dialogo.findViewById<Button>(R.id.button10)
+
+            enviar.setOnClickListener {
+                try{
+                    var basedatos=Basedatos(this,nombreBaseDatos,null,1)
+                    var insertar=basedatos.writableDatabase
+                    var SQL="INSERT INTO ACTIVIDAD VALUES(NULL,'${descripcion.text.toString()}','${fecha.text.toString()}','${fecha1}')"
+
+                    insertar.execSQL(SQL)
+                    mensaje("se inserto correctamente")
+                    insertar.close()
+                    basedatos.close()
+                    descripcion.setText("")
+                    fecha.setText("")
+                }catch (error: SQLiteException){
+                    mensaje(error.message.toString())
+                }
+                CargarData()
+                dialogo.dismiss()
+            }
+
+            cerrar.setOnClickListener {
+                dialogo.dismiss()
+            }
+            dialogo.show()
         }
     }
-
-    fun CargarData(){
+    private fun CargarData(){
         try{
             var baseDatos=Basedatos(this,nombreBaseDatos,null,1)
             var select=baseDatos.readableDatabase
@@ -31,7 +68,7 @@ class MainActivity : AppCompatActivity() {
 
             var cursor=select.rawQuery(SQL,null)
 
-            if(cursor.count>0){
+        if(cursor.count>=0){
                 var arreglo = ArrayList<String>()
                 this.listaID=ArrayList<String>()
                 cursor.moveToFirst()
@@ -46,7 +83,7 @@ class MainActivity : AppCompatActivity() {
                 Lista.setOnItemClickListener { parent, view, position, id ->
                     AlertDialog.Builder(this).setTitle("ATENCION").setMessage("¿Que desea hacer con este ITEM?")
                         .setPositiveButton("Eliminar"){d, i->
-                            EliminarPorID(listaID[position])
+                            EliminarID(listaID[position])
                         }
                         .setNeutralButton("Ver actividad"){d,i->
                             var otroActivity= Intent(this,Main2Activity::class.java)
@@ -63,11 +100,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun mensaje(mensaje:String){
-        AlertDialog.Builder(this).setMessage(mensaje).show()
-    }
-
-    fun EliminarPorID(id: String){
+    private fun EliminarID(id: String){
         try{
             var basedatos=Basedatos(this,nombreBaseDatos,null,1)
             var insertar=basedatos.writableDatabase
@@ -80,5 +113,18 @@ class MainActivity : AppCompatActivity() {
         }catch (error:SQLiteException){
             mensaje(error.message.toString())
         }
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fechaActual():String{
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        var fechaA = current.format(formatter)
+        return fechaA
+    }
+
+    private fun mensaje(mensaje:String){
+        AlertDialog.Builder(this).setMessage(mensaje).show()
     }
 }
